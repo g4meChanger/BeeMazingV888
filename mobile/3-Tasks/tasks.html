@@ -517,23 +517,23 @@ body {
         <!-- Tasks will be loaded dynamically here -->
     </div>
 
-    <a href="/BeeMazing-Y1/mobile/3-Tasks/addtasks.html" class="add-task-btn" aria-label="Add Task" onclick="localStorage.removeItem('familyApp_editTask'); localStorage.removeItem('familyApp_editTask_index');">+</a>
+    <a href="/BeeMazingV888/mobile/3-Tasks/addtasks.html" class="add-task-btn" aria-label="Add Task" onclick="localStorage.removeItem('familyApp_editTask'); localStorage.removeItem('familyApp_editTask_index');">+</a>
 
 
     <div class="footer">
-        <a href="/BeeMazing-Y1/mobile/2-UserProfiles/userAdmin.html" class="footer-icon" id="homeLink" aria-label="Home">
-            <img src="/BeeMazing-Y1/mobile/1-Home/HomeBtn.png" alt="Home" />
+        <a href="/BeeMazingV888/mobile/2-UserProfiles/userAdmin.html" class="footer-icon" id="homeLink" aria-label="Home">
+            <img src="/BeeMazingV888/mobile/1-Home/HomeBtn.png" alt="Home" />
             <span></span>
         </a>
-        <a href="/BeeMazing-Y1/mobile/3-Tasks/tasks.html" class="footer-icon" aria-label="Tasks">
-            <img src="/BeeMazing-Y1/mobile/1-Home/TasksBtn.png" alt="Tasks" />
+        <a href="/BeeMazingV888/mobile/3-Tasks/tasks.html" class="footer-icon" aria-label="Tasks">
+            <img src="/BeeMazingV888/mobile/1-Home/TasksBtn.png" alt="Tasks" />
         </a>
-        <a href="/BeeMazing-Y1/mobile/4-Market/market.html" class="footer-icon" aria-label="Market">
-            <img src="/BeeMazing-Y1/mobile/1-Home/MarketBtn.png" alt="Market" />
+        <a href="/BeeMazingV888/mobile/4-Market/market.html" class="footer-icon" aria-label="Market">
+            <img src="/BeeMazingV888/mobile/1-Home/MarketBtn.png" alt="Market" />
         </a>
     </div>
 
-    <script src="/BeeMazing-Y1/shared/taskrotations.js?t=${Date.now()}"></script>
+    <script src="/BeeMazingV888/shared/taskrotations.js?t=${Date.now()}"></script>
 
     <script>
 
@@ -545,7 +545,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const admin = urlParams.get("admin");
     const user = urlParams.get("user");
     if (admin && user) {
-        homeLink.href = `/BeeMazing-Y1/mobile/2-UserProfiles/userAdmin.html?admin=${encodeURIComponent(admin)}&user=${encodeURIComponent(user)}`;
+        homeLink.href = `/BeeMazingV888/mobile/2-UserProfiles/userAdmin.html?admin=${encodeURIComponent(admin)}&user=${encodeURIComponent(user)}`;
     }
 });
 
@@ -554,7 +554,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // Verify taskrotations.js load
-fetch("/BeeMazing-Y1/shared/taskrotations.js?t=" + Date.now(), { method: "HEAD" })
+fetch("/BeeMazingV888/shared/taskrotations.js?t=" + Date.now(), { method: "HEAD" })
     .then(response => {
         if (!response.ok) {
             console.error(`Failed to fetch taskrotations.js: HTTP ${response.status}`);
@@ -867,7 +867,7 @@ async function showTaskDetails(task) {
     document.getElementById("editTaskBtn").addEventListener("click", () => {
         localStorage.setItem("familyApp_editTask", JSON.stringify(task));
         localStorage.setItem("familyApp_editTask_index", task.title + "-" + task.date);
-        window.location.href = "/BeeMazing-Y1/mobile/3-Tasks/addtasks.html";
+        window.location.href = "/BeeMazingV888/mobile/3-Tasks/addtasks.html";
     });
 }
 

@@ -811,10 +811,10 @@
 </head>
     <body>
         <div class="date-header">
-            <img src="/BeeMazing-Y1/mobile/1-Home/ProfileBtn.png" class="profile-icon" id="profileIcon" alt="Select User" />
+            <img src="/BeeMazingV888/mobile/1-Home/ProfileBtn.png" class="profile-icon" id="profileIcon" alt="Select User" />
             <div id="logoutContainer" class="logout-container">
               <button id="logoutBtn" aria-label="Logout" title="Logout">
-                  <img src="/BeeMazing-Y1/mobile/1-Home/Logout.png" alt="Logout" class="logout-icon" />
+                  <img src="/BeeMazingV888/mobile/1-Home/Logout.png" alt="Logout" class="logout-icon" />
               </button>
           </div>
             <div class="month-nav">
@@ -889,13 +889,13 @@
 
   <div class="footer">
     <a href="#" id="homeButton" class="footer-icon active" aria-label="Home">
-        <img src="/BeeMazing-Y1/mobile/1-Home/HomeBtn.png" alt="Home" />
+        <img src="/BeeMazingV888/mobile/1-Home/HomeBtn.png" alt="Home" />
     </a>
-    <a href="/BeeMazing-Y1/mobile/3-Tasks/tasks.html" class="footer-icon" aria-label="Tasks">
-      <img src="/BeeMazing-Y1/mobile/1-Home/TasksBtn.png" alt="Tasks" />
+    <a href="/BeeMazingV888/mobile/3-Tasks/tasks.html" class="footer-icon" aria-label="Tasks">
+      <img src="/BeeMazingV888/mobile/1-Home/TasksBtn.png" alt="Tasks" />
   </a>
-  <a href="/BeeMazing-Y1/mobile/4-Market/market.html" class="footer-icon" aria-label="Market">
-      <img src="/BeeMazing-Y1/mobile/1-Home/MarketBtn.png" alt="Market" />
+  <a href="/BeeMazingV888/mobile/4-Market/market.html" class="footer-icon" aria-label="Market">
+      <img src="/BeeMazingV888/mobile/1-Home/MarketBtn.png" alt="Market" />
   </a>
 </div>
 
@@ -913,15 +913,15 @@
 const urlParams = new URLSearchParams(window.location.search);
 const adminEmail = urlParams.get('admin') || localStorage.getItem('currentAdminEmail') || '';
 const userName = urlParams.get('user') || '';
-const basePath = '/BeeMazing-Y1/mobile/2-UserProfiles';
+const basePath = '/BeeMazingV888/mobile/2-UserProfiles';
 
 const homeButton = document.getElementById('homeButton');
-const tasksButton = document.querySelector('a[href="/BeeMazing-Y1/mobile/3-Tasks/tasks.html"]');
-const marketButton = document.querySelector('a[href="/BeeMazing-Y1/mobile/4-Market/market.html"]');
+const tasksButton = document.querySelector('a[href="/BeeMazingV888/mobile/3-Tasks/tasks.html"]');
+const marketButton = document.querySelector('a[href="/BeeMazingV888/mobile/4-Market/market.html"]');
 if (adminEmail && userName) {
     homeButton.href = `${basePath}/userAdmin.html?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(userName)}`;
-    tasksButton.href = `/BeeMazing-Y1/mobile/3-Tasks/tasks.html?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(userName)}`;
-    marketButton.href = `/BeeMazing-Y1/mobile/4-Market/market.html?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(userName)}`;
+    tasksButton.href = `/BeeMazingV888/mobile/3-Tasks/tasks.html?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(userName)}`;
+    marketButton.href = `/BeeMazingV888/mobile/4-Market/market.html?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(userName)}`;
 }
 
 
@@ -1123,7 +1123,7 @@ document.getElementById("submitUserBtn").addEventListener("click", async () => {
           }
           li.addEventListener("click", () => {
             const page = userPermissions[user] === "Admin" ? "userAdmin.html" : "users.html";
-            window.location.href = `/BeeMazing-Y1/mobile/2-UserProfiles/${page}?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(user)}`;
+            window.location.href = `/BeeMazingV888/mobile/2-UserProfiles/${page}?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(user)}`;
           });
           userList.appendChild(li);
         });
@@ -1207,7 +1207,7 @@ profileIcon.addEventListener("click", async () => {
             }
             li.addEventListener("click", () => {
                 const page = userPermissions[user] === "Admin" ? "userAdmin.html" : "users.html";
-                window.location.href = `/BeeMazing-Y1/mobile/2-UserProfiles/${page}?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(user)}`;
+                window.location.href = `/BeeMazingV888/mobile/2-UserProfiles/${page}?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(user)}`;
             });
             userList.appendChild(li);
         });
@@ -1281,7 +1281,7 @@ confirmYesBtn.addEventListener("click", async () => {
                 }
                 li.addEventListener("click", () => {
                     const page = userPermissions[user] === "Admin" ? "userAdmin.html" : "users.html";
-                    window.location.href = `/BeeMazing-Y1/mobile/2-UserProfiles/${page}?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(user)}`;
+                    window.location.href = `/BeeMazingV888/mobile/2-UserProfiles/${page}?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(user)}`;
                 });
                 userList.appendChild(li);
             });
@@ -1378,7 +1378,7 @@ savePermissionBtn.addEventListener("click", async () => {
             }
             li.addEventListener("click", () => {
                 const page = userPermissions[user] === "Admin" ? "userAdmin.html" : "users.html";
-                window.location.href = `/BeeMazing-Y1/mobile/2-UserProfiles/${page}?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(user)}`;
+                window.location.href = `/BeeMazingV888/mobile/2-UserProfiles/${page}?admin=${encodeURIComponent(adminEmail)}&user=${encodeURIComponent(user)}`;
             });
             userList.appendChild(li);
         });
@@ -1403,7 +1403,7 @@ logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("userData");
     localStorage.removeItem("adminPassword");
     // Keep currentAdminEmail as per home.js
-    window.location.href = "/BeeMazing-Y1/login.html";
+    window.location.href = "/BeeMazingV888/login.html";
 });
 
 
@@ -1859,7 +1859,7 @@ document.getElementById("scrollRight").addEventListener("click", () => {
 
 
 
-<script src="/BeeMazing-Y1/shared/taskrotations.js?t=${Date.now()}"></script>
+<script src="/BeeMazingV888/shared/taskrotations.js?t=${Date.now()}"></script>
 
 
 
