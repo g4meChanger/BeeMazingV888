@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Roll the Dice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #1E1F26;
+      color: #fff;
+      margin: 0;
+      padding: 30px;
+      text-align: center;
+    }
+    h1 {
+      color: #FFC107;
+      margin-bottom: 20px;
+    }
+    .dice {
+      width: 100px;
+      height: 100px;
+      background: #2A2B32;
+      border: 4px solid #FFC107;
+      border-radius: 16px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 5px;
+      justify-items: center;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0;
+    }
+    .dot.active {
+      opacity: 1;
+    }
+    .btn {
+      background: #FFC107;
+      color: #1E1F26;
+      font-size: 20px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #e0a800;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #FFC107;
+      font-weight: bold;
+    }
+    ul.reward-list {
+      margin-top: 40px;
+      text-align: left;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    ul.reward-list li {
+      margin-bottom: 6px;
+    }
+    .error-message {
+      color: #FF6666;
+      margin-top: 40px;
+      font-size: 18px;
+    }
+    .close-btn {
+      display: none;
+      margin-top: 30px;
+      background: #FFC107;
+      color: #1E1F26;
+      font-size: 18px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .close-btn:hover {
+      background: #e0a800;
+    }
+
+
+
+    #rollBtn.hidden {
+  display: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <h1>🎲 Roll the Dice 1</h1>
+
+  <div class="dice" id="dice">
+    <div class="dot" id="d1"></div>
+    <div class="dot" id="d2"></div>
+    <div class="dot" id="d3"></div>
+    <div class="dot" id="d4"></div>
+    <div class="dot" id="d5"></div>
+    <div class="dot" id="d6"></div>
+    <div class="dot" id="d7"></div>
+    <div class="dot" id="d8"></div>
+    <div class="dot" id="d9"></div>
+  </div>
+
+  <button class="btn" id="rollBtn" onclick="rollDice()">Roll</button>
+
+  <div class="result" id="resultText"></div>
+  
+  <button class="close-btn" id="closeBtn" onclick="goBack()">Close</button>
+  
+  <ul class="reward-list" id="rewardLegend"></ul>
+  
+  <!-- Footer with Test Your Luck Later button -->
+  <div id="testLuckFooter" style="position:fixed; bottom:0; left:0; right:0; padding:12px 0; display:flex; justify-content:center; align-items:center; box-sizing:border-box;">
+    <button onclick="testLuckLater()" style="background:#2A2B32; color:#FFC107; font-size:16px; padding:10px 20px; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">
+      Test Your Luck Later
+    </button>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script>
+    let user = "";
+    let adminEmail = "";
+    let outcomes = [];
+    let rewardName = "";
+
+
+    const dotMap = {
+      1: [5],
+      2: [1, 9],
+      3: [1, 5, 9],
+      4: [1, 3, 7, 9],
+      5: [1, 3, 5, 7, 9],
+      6: [1, 3, 4, 6, 7, 9]
+    };
+
+    const dots = Array.from({ length: 9 }, (_, i) => document.getElementById("d" + (i + 1)));
+    const resultText = document.getElementById("resultText");
+    const rewardLegend = document.getElementById("rewardLegend");
+    const closeBtn = document.getElementById("closeBtn");
+
+    function showFace(n) {
+      dots.forEach(dot => dot.classList.remove("active"));
+      dotMap[n].forEach(index => {
+        document.getElementById("d" + index).classList.add("active");
+      });
+    }
+
+    function formatOutcomeText(outcome) {
+      if (typeof outcome === "string") return outcome;
+      if (outcome?.type === "Honey (amount)" || outcome?.type === "honey") {
+        return `${outcome.value || outcome.amount} Honey 🍯`;
+      }
+      return outcome?.type || "Mystery Reward";
+    }
+
+
+
+
+
+
+
+
+    function rollDice() {
+  const rollBtn = document.getElementById("rollBtn");
+  rollBtn.classList.add("hidden"); // Hide Roll button immediately
+
+  const testLuckFooter = document.getElementById("testLuckFooter");
+  if (testLuckFooter) {
+    testLuckFooter.style.display = "none"; // Hide Test Your Luck Later button
+  }
+
+  resultText.textContent = "";
+  closeBtn.style.display = "none";
+
+  // ✅ Correct: Pass rewardName
+  removeDiceChestFromUser(user, rewardName);
+
+  let currentRoll = 0;
+  let rollTimes = 30;
+  let delay = 40;
+
+  function animateRoll() {
+    const number = Math.floor(Math.random() * 6) + 1;
+    showFace(number);
+    currentRoll++;
+    if (currentRoll < rollTimes) {
+      delay += 12;
+      setTimeout(animateRoll, delay);
+    } else {
+      setTimeout(() => {
+        const result = number;
+        const reward = outcomes[result - 1];
+        const outcomeText = formatOutcomeText(reward);
+        resultText.textContent = `You got: ${outcomeText}`;
+        grantChestToUser(user, reward);
+
+        closeBtn.style.display = "inline-block"; // Show Close button after result
+      }, 300);
+    }
+  }
+
+  animateRoll();
+}
+
+
+
+
+
+
+
+
+
+    async function grantChestToUser(userName, reward) {
+      try {
+        const customResponse = await fetch(`https://beemazing.onrender.com/api/custom-chests?adminEmail=${encodeURIComponent(adminEmail)}`);
+        const customData = await customResponse.json();
+        if (!customResponse.ok) throw new Error(customData.error || "Failed to fetch custom chests");
+        const allChestsList = [
+          { name: "The Key", quote: "You hold the key to the path of others.", effect: "➡ Transfer one of your tasks to another user. You get the honey.", image: "/BeeMazing-Y1/mobile/4-Market/LuckyChest/Keyy.gif" },
+          { name: "Double Trouble", quote: "Today’s efforts are worth double.", effect: "➡ Next task = double honey.", image: "/BeeMazing-Y1/mobile/4-Market/LuckyChest/DoubleTrouble.png" },
+          { name: "Roll the Dice", quote: "Test your Luck", effect: "➡ Get a surprise reward.", image: "/BeeMazing-Y1/mobile/4-Market/LuckyChest/dice.gif" },
+          { name: "Dance Party", quote: "Feel the rhythm!", effect: "➡ Dance after a task. If someone joins, both get honey.", image: "/BeeMazing-Y1/mobile/4-Market/LuckyChest/Dance.jpg" },
+          { name: "Bee-Witched!", quote: "Your magical aura changes the rules...", effect: "➡ Make a silly rule. Others who follow it get honey.", image: "/BeeMazing-Y1/mobile/4-Market/LuckyChest/Bee-Witched.jpg" },
+          { name: "Special Buzz Off", quote: "You’re too cool for chores today.", effect: "➡ Skip all tasks today.", image: "/BeeMazing-Y1/mobile/4-Market/LuckyChest/Special.jpg" },
+          ...(customData.customChests || [])
+        ];
+
+        const chestResponse = await fetch(`https://beemazing.onrender.com/api/lucky-chests?adminEmail=${encodeURIComponent(adminEmail)}`);
+        const chestData = await chestResponse.json();
+        if (!chestResponse.ok) throw new Error(chestData.error || "Failed to fetch lucky chests");
+        const allChests = chestData.luckyChests || {};
+        if (!allChests[userName]) allChests[userName] = [];
+
+        let chest;
+        if (reward.type === "Honey (amount)" || reward.type === "honey") {
+          const honeyAmount = parseInt(reward.value || reward.amount);
+          chest = {
+            name: `${honeyAmount} Honey`,
+            quote: "",
+            effect: `🍯 Collect ${honeyAmount} honey instantly!`,
+            image: "/BeeMazing-Y1/mobile/4-Market/LuckyChest/honey.gif",
+            honey: honeyAmount,
+            requiredPoints: 0,
+            progress: 0,
+            type: "normal",
+            fromDiceChest: true
+          };
+        } else {
+          const match = allChestsList.find(c => c.name === reward.type);
+          chest = {
+            name: match?.name || reward.type || "Mystery Reward",
+            quote: match?.quote || "",
+            effect: match?.effect || "",
+            image: match?.image || "/BeeMazing-Y1/mobile/4-Market/LuckyChest/default.png",
+            requiredPoints: 0,
+            progress: 0,
+            type: "normal",
+            fromDiceChest: true
+          };
+        }
+
+        allChests[userName].push(chest);
+        await fetch("https://beemazing.onrender.com/api/lucky-chests", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ adminEmail, luckyChests: allChests })
+        });
+      } catch (err) {
+        console.error("Error granting chest:", err);
+        alert("Failed to grant reward. Please try again.");
+      }
+    }
+
+
+
+
+
+
+    async function removeDiceChestFromUser(userName, rewardName) {
+  try {
+    const rewardsResponse = await fetch(`https://beemazing.onrender.com/api/user-rewards?adminEmail=${encodeURIComponent(adminEmail)}`);
+    const rewardsData = await rewardsResponse.json();
+    if (!rewardsResponse.ok) throw new Error(rewardsData.error || "Failed to fetch user rewards");
+    const rewards = rewardsData.userRewards || {};
+    if (!rewards[userName]) return;
+
+    const historyResponse = await fetch(`https://beemazing.onrender.com/api/reward-history?adminEmail=${encodeURIComponent(adminEmail)}`);
+    const historyData = await historyResponse.json();
+    if (!historyResponse.ok) throw new Error(historyData.error || "Failed to fetch reward history");
+    const history = historyData.rewardHistory || {};
+
+    const index = rewards[userName].findIndex(r => r.name === rewardName);
+    if (index !== -1) {
+      const reward = rewards[userName][index];
+      rewards[userName].splice(index, 1);
+
+      if (!history[userName]) history[userName] = [];
+      history[userName].push({
+        name: reward.name,
+        date: reward.date,
+        receivedDate: new Date().toLocaleString()
+      });
+
+      await fetch("https://beemazing.onrender.com/api/user-rewards", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ adminEmail, userRewards: rewards })
+      });
+
+      await fetch("https://beemazing.onrender.com/api/reward-history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ adminEmail, rewardHistory: history })
+      });
+    }
+  } catch (err) {
+    console.error("Error removing dice chest:", err);
+    alert("Failed to remove dice chest. Please try again.");
+  }
+}
+
+
+
+
+
+
+
+
+    function goBack() {
+      window.location.href = `/BeeMazing-Y1/mobile/2-UserProfiles/users.html?user=${encodeURIComponent(user)}&adminEmail=${encodeURIComponent(adminEmail)}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      user = params.get("user");
+      rewardName = params.get("rewardName") || "";
+      adminEmail = params.get("adminEmail") || localStorage.getItem("currentAdminEmail");
+
+
+      if (adminEmail && adminEmail !== "null") {
+        localStorage.setItem("currentAdminEmail", adminEmail);
+      }
+
+      const encodedData = params.get("data");
+
+      if (!user || !adminEmail) {
+        document.body.innerHTML = `<p class="error-message">Missing user or admin email. Please try again.</p>`;
+        return;
+      }
+
+      try {
+        const decoded = JSON.parse(atob(decodeURIComponent(encodedData)));
+        if (!decoded || decoded.type !== "dice" || !Array.isArray(decoded.outcomes) || decoded.outcomes.length !== 6) {
+          throw new Error("Invalid dice object");
+        }
+        outcomes = decoded.outcomes;
+
+        rewardLegend.innerHTML = "";
+        outcomes.forEach((outcome, i) => {
+          const li = document.createElement("li");
+          li.textContent = `${i + 1} = ${formatOutcomeText(outcome)}`;
+          rewardLegend.appendChild(li);
+        });
+      } catch (e) {
+        document.body.innerHTML = `<p class="error-message">Invalid Dice Chest format.</p>`;
+      }
+    });
+
+
+
+
+    function testLuckLater() {
+  window.location.href = `/BeeMazing-Y1/mobile/2-UserProfiles/users.html?user=${encodeURIComponent(user)}&adminEmail=${encodeURIComponent(adminEmail)}`;
+}
+
+
+
+
+
+  </script>
+</body>
+</html>
